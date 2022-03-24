@@ -101,10 +101,14 @@ export type EChartSeries = {
     };
 };
 
-const getFormatterValue = (value: any, key: string, fields: Dimension[]) => {
+const getFormatterValue = (
+    value: any,
+    key: string,
+    fields: Dimension[],
+): string => {
     const field = fields.find((item) => fieldId(item) === key);
     const fieldFormatter = field ? getDimensionFormatter(field) : null;
-    return fieldFormatter?.({ value: value }) ?? `${value}`;
+    return fieldFormatter?.({ value: value }) ?? `${value || '∅'}`;
 };
 
 const valueFormatter =
