@@ -1,5 +1,6 @@
 import { HTMLSelect, InputGroup, Switch, Tab, Tabs } from '@blueprintjs/core';
 import {
+    CartesianSeriesType,
     fieldId,
     getDefaultSeriesColor,
     getDimensions,
@@ -30,12 +31,14 @@ const ChartConfigTabs: FC = () => {
         resultsData,
         cartesianConfig: {
             dirtyLayout,
+            dirtyChartType,
             dirtyEchartsConfig,
             setXField,
             addSingleSeries,
             removeSingleSeries,
             updateSingleSeries,
             setLabel,
+            setStacking,
             setXAxisName,
             setYAxisName,
         },
@@ -155,6 +158,21 @@ const ChartConfigTabs: FC = () => {
                                     />
                                 );
                             })}
+                            {dirtyChartType === CartesianSeriesType.BAR && (
+                                <>
+                                    <GridLabel>Stacking</GridLabel>
+                                    <HTMLSelect
+                                        options={['stacking', 'no stacking']}
+                                        defaultValue={'no stacking'}
+                                        onChange={(e) =>
+                                            setStacking(
+                                                e.currentTarget.value ===
+                                                    'stacking',
+                                            )
+                                        }
+                                    />
+                                </>
+                            )}
                         </FieldsGrid>
                     }
                 />

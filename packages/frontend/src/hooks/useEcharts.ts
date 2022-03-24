@@ -86,6 +86,7 @@ const getEchartsTooltipConfig = (type: Series['type']) =>
 export type EChartSeries = {
     type: Series['type'];
     connectNulls: boolean;
+    stack?: string;
     name?: string;
     color?: string;
     encode: {
@@ -95,6 +96,9 @@ export type EChartSeries = {
         seriesName: string;
     };
     dimensions: Array<{ name: string; displayName: string }>;
+    emphasis?: {
+        focus?: string;
+    };
 };
 
 const getFormatterValue = (value: any, key: string, fields: Dimension[]) => {
@@ -133,7 +137,7 @@ export const getEchartsSeries = (
         return (cartesianChart.eChartsConfig.series || []).map<EChartSeries>(
             (series) => {
                 const { flipAxes } = cartesianChart.layout;
-                const xField = hashFieldReference(series.encode.xRef);
+                const xFieldHash = hashFieldReference(series.encode.xRef);
                 const yFieldHash = hashFieldReference(series.encode.yRef);
                 const pivotField = series.encode.yRef.pivotValues?.find(
                     ({ field }) => field === pivotKey,
@@ -146,23 +150,26 @@ export const getEchartsSeries = (
                 );
                 return {
                     ...series,
+                    emphasis: {
+                        focus: 'series',
+                    },
                     connectNulls: true,
                     encode: {
-                        x: flipAxes ? yFieldHash : xField,
-                        y: flipAxes ? xField : yFieldHash,
+                        x: flipAxes ? yFieldHash : xFieldHash,
+                        y: flipAxes ? xFieldHash : yFieldHash,
                         tooltip:
                             series.type === CartesianSeriesType.BAR
                                 ? [yFieldHash]
-                                : [xField, yFieldHash],
+                                : [xFieldHash, yFieldHash],
                         seriesName: yFieldHash,
                     },
                     dimensions: [
                         {
-                            name: xField,
+                            name: xFieldHash,
                             displayName: getLabelFromField(
                                 explore,
                                 tableCalculations,
-                                xField,
+                                xFieldHash,
                             ),
                         },
                         {
@@ -180,7 +187,7 @@ export const getEchartsSeries = (
                     ],
                     tooltip: {
                         valueFormatter: valueFormatter(
-                            xField,
+                            xFieldHash,
                             series.encode.yRef.field,
                             explore,
                         ),
@@ -199,6 +206,9 @@ export const getEchartsSeries = (
                 ...sum,
                 {
                     ...series,
+                    emphasis: {
+                        focus: 'series',
+                    },
                     connectNulls: true,
                     encode: {
                         ...series.encode,
