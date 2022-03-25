@@ -108,20 +108,7 @@ const ChartConfigTabs: FC = () => {
                     title="Layout"
                     panel={
                         <>
-                            <FieldLayoutOptions
-                                items={items}
-
-                                // isGroupActive={
-                                //     !!pivotDimension &&
-                                //     pivotDimension === itemId
-                                // }
-
-                                // onGroupClick={(isActive) =>
-                                //     isActive
-                                //         ? setPivotDimensions([itemId])
-                                //         : setPivotDimensions(undefined)
-                                // }
-                            />
+                            <FieldLayoutOptions items={items} />
                         </>
                     }
                 />
