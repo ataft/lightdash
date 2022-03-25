@@ -13,12 +13,7 @@ import {
 } from 'common';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useVisualizationContext } from '../LightdashVisualization/VisualizationProvider';
-import {
-    FieldRow,
-    FieldRowInputs,
-    InputWrapper,
-    Wrapper,
-} from './ChartConfigPanel.styles';
+import { InputWrapper, Wrapper } from './ChartConfigPanel.styles';
 import FieldLayoutOptions from './FieldLayoutOptions';
 import BasicSeriesConfiguration from './Series/BasicSeriesConfiguration';
 import GroupedSeriesConfiguration from './Series/GroupedSeriesConfiguration';
@@ -30,18 +25,13 @@ const ChartConfigTabs: FC = () => {
         cartesianConfig: {
             dirtyLayout,
             dirtyEchartsConfig,
-            setXField,
-            addSingleSeries,
-            removeSingleSeries,
             updateSingleSeries,
             updateAllGroupedSeries,
             setXAxisName,
             setYAxisName,
         },
         pivotDimensions,
-        setPivotDimensions,
     } = useVisualizationContext();
-    const yFieldsKeys = dirtyLayout?.yField || [];
     const pivotDimension = pivotDimensions?.[0];
 
     const [tab, setTab] = useState<string | number>('layout');
